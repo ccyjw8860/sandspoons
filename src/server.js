@@ -1,19 +1,20 @@
 import express from "express";
+import morgan from "morgan";
+
+import globalRouter from "./routers/globalRouter";
+import userRouter from "./routers/userRouter";
+import videoRouter from "./routers/videoRouter";
 
 const PORT = 4000;
 const app = express();
+const logger = morgan("dev");
+app.use(logger);
 
-const handleHome = (req, res) => {
-  return res.send("WELCOME!");
-};
+app.use("/", globalRouter);
+app.use("/users", userRouter);
+app.use("/videos", videoRouter);
 
-const handleLogin = (req, res) => {
-  return res.send("Login here.");
-};
-
-app.get("/", handleHome);
-app.get("/login", handleLogin);
-
-const handleListening = () => console.log("hi?");
+const handleListening = () =>
+  console.log("✅ Sever is starting at http://localhost:4000 🚀");
 
 app.listen(PORT, handleListening);

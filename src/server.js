@@ -28,7 +28,7 @@ app.use(
 );
 
 app.use(localsMiddleware);
-
+app.use("/uploads", express.static("uploads"));
 //passport setting
 app.use(passport.initialize());
 app.use(passport.session());

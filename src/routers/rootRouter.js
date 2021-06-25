@@ -7,11 +7,19 @@ import {
   logout,
 } from "../controllers/userControllers";
 import { home, search } from "../controllers/videoController";
-import { protectorMiddleware, publicOnlyMiddleware } from "../middlewares";
+import {
+  avatarUpload,
+  protectorMiddleware,
+  publicOnlyMiddleware,
+} from "../middlewares";
 
 const rootRouter = express.Router();
 rootRouter.route("/").get(home).post(logout);
-rootRouter.route("/join").all(publicOnlyMiddleware).get(getJoin).post(postJoin);
+rootRouter
+  .route("/join")
+  .all(publicOnlyMiddleware)
+  .get(getJoin)
+  .post(avatarUpload.single("avatar"), postJoin);
 rootRouter
   .route("/login")
   .all(publicOnlyMiddleware)

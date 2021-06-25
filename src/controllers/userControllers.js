@@ -7,8 +7,12 @@ export const getJoin = (req, res) => {
 };
 
 export const postJoin = async (req, res) => {
-  const { username, email, password, password_2 } = req.body;
+  const {
+    body: { username, email, password, password_2 },
+    file,
+  } = req;
   const { checkEmail, checkUsername } = await User.checkUser(email, username);
+
   if (checkEmail && checkUsername) {
     return res.status(400).render("users/join", {
       pageTitle: "Join",
@@ -28,14 +32,19 @@ export const postJoin = async (req, res) => {
   if (password === password_2) {
     if (!checkEmail && !checkUsername) {
       try {
+        console.log(file);
+
         await User.create({
+          avatarUrl: file ? file.path : "",
           username,
           email,
           password: await User.hashing(password),
           login_type: "sandSpoons",
         });
-        res.render("users/login", { pageTitle: "Login", email, password });
+        res.redirect("/login");
       } catch (error) {
+        console.log(error);
+        console.log(password);
         res.status(400).render("users/join", {
           pageTitle: "Join",
           errorMessage: error._message,

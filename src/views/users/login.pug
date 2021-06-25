@@ -1,0 +1,23 @@
+extends ../root/base
+
+block content 
+    if errorMessage 
+        span=errorMessage
+    form(method="POST")
+        if email
+            input(name="email", placeholder="Email address", type="email", value=`${email}`, required)
+        else
+            input(name="email", placeholder="Email address", type="email", required)
+        if password 
+            input(name="password", placeholder="Password", type="password", value=`${password}`, required)
+        else 
+            input(name="password", placeholder="Password", type="password", required)
+        input(type='submit', vlaue="Login")
+        br
+        a(href='/users/github/start') Continue with Github &rarr;
+        br
+        a(href='/users/google/start') Continue with Google &rarr;
+    hr
+    div 
+        span Don't have an account?
+        a(href="/join") Join now &rarr;

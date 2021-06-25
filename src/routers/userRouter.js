@@ -1,15 +1,38 @@
 import express from "express";
 import {
-  editUser,
+  getUserEdit,
+  postUserEdit,
   deleteUser,
-  see,
-  logout,
+  startGithubLogin,
+  getGithubCallback,
+  startGoogleLogin,
+  getGoogleCallback,
+  getChangePassword,
+  postChangePassword,
 } from "../controllers/userControllers";
+import {
+  protectorMiddleware,
+  publicOnlyMiddleware,
+  socialExeptMiddleware,
+  uploadFiles,
+} from "../middlewares";
 
 const userRouter = express.Router();
-userRouter.get("/logout", logout);
-userRouter.get("/edit", editUser);
-userRouter.get("/delete", deleteUser);
-userRouter.get("/:id", see);
+
+userRouter
+  .route("/edit")
+  .all(protectorMiddleware)
+  .get(getUserEdit)
+  .post(uploadFiles.single("avatar"), postUserEdit);
+userRouter
+  .route("/change-password")
+  .all(protectorMiddleware, socialExeptMiddleware)
+  .get(getChangePassword)
+  .post(postChangePassword);
+userRouter.get("/delete", protectorMiddleware, deleteUser);
+userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
+userRouter.get("/github/callback", publicOnlyMiddleware, getGithubCallback);
+userRouter.get("/google/start", publicOnlyMiddleware, startGoogleLogin);
+userRouter.get("/google/callback", publicOnlyMiddleware, getGoogleCallback);
 
 export default userRouter;

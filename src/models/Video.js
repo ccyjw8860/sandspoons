@@ -14,6 +14,17 @@ const videoSchema = new mongoose.Schema({
   //_id가 Object이기 때문에 type:mongoose.Schema.Types.ObjectId로 설정
   //ref는 어떤 모델을 참고하고 있는지 설정하는것. User.js에서 export default User;라고 선언했으므로 ref에는 User가 들어감
   owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
+  comments: [
+    {
+      commentor: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User",
+      },
+      context: { type: String, trim: true, required: true },
+      likes: { type: Number, required: true, default: 0 },
+    },
+  ],
 });
 
 videoSchema.static("formatHashtags", (hashtags) => {

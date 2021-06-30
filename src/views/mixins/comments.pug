@@ -1,0 +1,6 @@
+mixin commentVisual(comments)
+    div
+        each comment in comments
+            //- span=comment.commentor
+            span=comment.context 
+            span=comment.likes

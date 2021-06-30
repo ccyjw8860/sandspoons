@@ -115,3 +115,26 @@ export const search = async (req, res) => {
   }
   res.render("videos/search", { pageTitle: "Seach Videos", videos });
 };
+
+export const postComments = async (req, res) => {
+  const {
+    body: { context },
+    params: { id },
+  } = req;
+  const video = await Video.findByIdAndUpdate(
+    id,
+    {
+      comments: comments.push({
+        commentor: id,
+        context,
+      }),
+    },
+    { new: true }
+  ).populate("owner");
+
+  res.render("videos/watch", {
+    pageTitle: video.title,
+    video,
+    owner: video.owner,
+  });
+};

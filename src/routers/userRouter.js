@@ -9,6 +9,8 @@ import {
   getGoogleCallback,
   getChangePassword,
   postChangePassword,
+  getUserProfile,
+  postUserProfile,
 } from "../controllers/userControllers";
 import {
   avatarUpload,
@@ -34,5 +36,6 @@ userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/callback", publicOnlyMiddleware, getGithubCallback);
 userRouter.get("/google/start", publicOnlyMiddleware, startGoogleLogin);
 userRouter.get("/google/callback", publicOnlyMiddleware, getGoogleCallback);
+userRouter.get("/:id", getUserProfile);
 
 export default userRouter;

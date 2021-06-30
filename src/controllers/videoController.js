@@ -1,3 +1,4 @@
+import User from "../models/User";
 import Video from "../models/Video";
 
 export const home = async (req, res) => {
@@ -11,9 +12,17 @@ export const home = async (req, res) => {
 
 export const watch = async (req, res) => {
   const { id } = req.params;
-  const video = await Video.findById(id);
+  //video를 찾고 ower의 id를 찾아서 또 User에서 id로 해당 user를 찾는것보다 아래의 코드가 훨씬 간단함
+  //popluate를 함으로써 owner가 object 형태의 user로 채워짐
+  //원래는 owner에 string으로 id만 있었는데, populate로 하면서 owner가 object로 표현됨
+  const video = await Video.findById(id).populate("owner");
+
   if (video) {
-    res.render("videos/watch", { pageTitle: video.title, video });
+    res.render("videos/watch", {
+      pageTitle: video.title,
+      video,
+      owner: video.owner,
+    });
   } else {
     res.status(404).render("root/404", { pageTitle: "Video not found" });
   }
@@ -61,16 +70,24 @@ export const getUpload = (req, res) => {
 
 export const postUpload = async (req, res) => {
   const {
+    session: {
+      user: { _id: id },
+    },
     body: { title, description, hashtags },
     file: { path },
   } = req;
+
   try {
-    await Video.create({
+    const newVideo = await Video.create({
       videoUrl: path,
       title,
       description,
+      owner: id, //Video.js에서 ower의 type을 ObjectId로 했기 떄문에 그냥 string으로 넣어도 됨
       hashtags: Video.formatHashtags(hashtags),
     });
+    const user = await User.findById(id);
+    user.videos.push(newVideo._id);
+    user.save();
     return res.redirect("/");
   } catch (error) {
     return res.status(400).render("videos/upload", {

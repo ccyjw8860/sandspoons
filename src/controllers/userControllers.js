@@ -265,3 +265,17 @@ export const postChangePassword = async (req, res) => {
     });
   }
 };
+
+export const getUserProfile = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id).populate("videos");
+
+  if (!user) {
+    res.status(404).render("404", { pageTitle: "User not found." });
+  }
+  res.render("users/profile", {
+    pageTitle: user.name,
+    user,
+    videos: user.videos,
+  });
+};

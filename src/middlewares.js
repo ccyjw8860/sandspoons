@@ -1,4 +1,5 @@
 import multer from "multer";
+import Video from "./models/Video";
 
 export const localsMiddleware = (req, res, next) => {
   res.locals.loggedIn = Boolean(req.session.loggedIn);
@@ -28,6 +29,23 @@ export const socialExeptMiddleware = (req, res, next) => {
     res.redirect("/");
   } else {
     next();
+  }
+};
+
+export const ownerOnlyMiddleware = async (req, res, next) => {
+  let userId = "";
+  if (req.session) {
+    userId = req.session.user._id;
+  }
+
+  const {
+    params: { id: videoId },
+  } = req;
+  const video = await Video.findById(videoId);
+  if (String(video.owner._id) === String(userId)) {
+    next();
+  } else {
+    res.status(404).redirect("/");
   }
 };
 

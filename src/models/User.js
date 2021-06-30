@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String },
   login_type: { type: String },
   avatarUrl: { type: String },
+  //User는 많은 video 목록을 갖을 수 있으므로, Array로 선언함
+  videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
 });
 
 userSchema.static("hashing", async (pw) => await bcrypt.hash(pw, 5));

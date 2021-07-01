@@ -3,7 +3,10 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   //entry는 내가 작성한 source code를 의미함
-  entry: "./src/client/js/main.js",
+  entry: {
+    main: "./src/client/js/main.js",
+    videoPlayer: "./src/client/js/videoPlayer.js",
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: "css/styles.css",
@@ -13,7 +16,7 @@ module.exports = {
   mode: "development",
   //output은 complie된 결과물을 의미함
   output: {
-    filename: "js/main.js",
+    filename: "js/[name].js",
     //path는 output의 저장 경로를 의미함
     path: path.resolve(__dirname, "assets"), //os.path.join과 같은 함수
     clean: true,

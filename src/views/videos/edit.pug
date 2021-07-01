@@ -9,3 +9,5 @@ block content
         input(name='description', placeholder="Description", value=`${video.description}`, required)
         input(name='hashtags', placeholder="Hashtags", value=`${video.hashtags.join(',')}`, required)
         input(value="Save", type="submit")
+block scripts
+    script(src="/assets/js/main.js")

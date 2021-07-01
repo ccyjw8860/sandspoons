@@ -6,7 +6,7 @@ import {
   postLogin,
   logout,
 } from "../controllers/userControllers";
-import { home, search } from "../controllers/videoController";
+import { home, search, testController } from "../controllers/videoController";
 import {
   avatarUpload,
   protectorMiddleware,
@@ -27,5 +27,6 @@ rootRouter
   .post(postLogin);
 rootRouter.get("/logout", protectorMiddleware, logout);
 rootRouter.get("/search", search);
+rootRouter.get("/test", testController);
 
 export default rootRouter;

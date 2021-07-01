@@ -20,7 +20,9 @@ videoRouter
   .all(protectorMiddleware)
   .get(getUpload)
   .post(videoUpload.single("video"), postUpload);
+
 videoRouter.route("/:id([0-9a-f]{24})").get(watch).post(postComments);
+
 videoRouter
   .route("/:id([0-9a-f]{24})/edit")
   .all(protectorMiddleware, ownerOnlyMiddleware)

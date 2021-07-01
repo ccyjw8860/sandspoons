@@ -1,5 +1,4 @@
 extends ../root/base.pug
-include ../mixins/comments
 
 block content 
     video(src="/"+video.videoUrl, controls)
@@ -17,6 +16,12 @@ block content
         form(method='POST')
             input(name='context', type='text', placeholder="Write your comment")
             input(type='submit', value="SUBMIT")
+    br
     div 
-        for comments in video.comments
-            +commentVisual(comments)
+        each comment in comments
+            span=comment.commentor.username 
+            br
+            span=comment.context
+            br
+            span=comment.likes
+            br

@@ -1,7 +1,8 @@
-const sessionUsers = ["botoks723", "botoks723@gmail.com"];
-const users = ["botoks723", "botoks@naver.com"];
-
-const check = sessionUsers.map((suser, ids) => {
-  return suser !== users[ids] ? users[ids] : "";
-});
-console.log(check);
+const video = {
+  comments: [{ commentor: "1234", context: "hi?" }],
+};
+video.comments = [
+  ...video.comments,
+  { commentor: "new commentor", context: "new hI?" },
+];
+console.log(video);

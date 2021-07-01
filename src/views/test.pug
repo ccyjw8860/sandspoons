@@ -1,0 +1,12 @@
+extends root/base.pug
+
+block content
+    div 
+        span TEST CODE!
+    div 
+        each comment in video.comments 
+            span=comment.commentor 
+            br
+            span=comment.context
+            br
+            span=comment._id
